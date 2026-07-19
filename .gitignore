@@ -53,14 +53,14 @@ server.log
 # Skills directory
 /skills/
 
-# jumpcut original (kept for reference)
-/jumpcut/
+# jumpcut original site (included for reference)
+# /jumpcut/
 
 # tool results
 /tool-results/
 
-# scripts (local only)
-/scripts/
+# scripts
+# /scripts/
 
 # z-scripts
 .zscripts/

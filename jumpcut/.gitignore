@@ -1,0 +1,12 @@
+.DS_Store
+**/.DS_Store
+
+# Local agent workspace notes
+agent/
+
+# Scratch prototypes outside the shipped site
+jump cut cards/
+
+node_modules/
+dist/
+build/
