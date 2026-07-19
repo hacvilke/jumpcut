@@ -52,3 +52,22 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# jumpcut original (kept for reference)
+/jumpcut/
+
+# tool results
+/tool-results/
+
+# scripts (local only)
+/scripts/
+
+# z-scripts
+.zscripts/
+
+# db
+/db/
+*.db
+
+# worklog
+worklog.md
