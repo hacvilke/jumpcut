@@ -1,0 +1,2002 @@
+     1→     1→/* =============================================
+     2→     2→   JUMPCUT — Design System
+     3→     3→   Inspired by lenis.dev × createrset aesthetic
+     4→     4→   ============================================= */
+     5→     5→
+     6→     6→:root {
+     7→     7→  /* Core palette — almost-black + pure white + accent */
+     8→     8→  --c-bg:        #080808;
+     9→     9→  --c-bg-1:      #0e0e0e;
+    10→    10→  --c-bg-2:      #141414;
+    11→    11→  --c-bg-3:      #1a1a1a;
+    12→    12→  --c-border:    rgba(255,255,255,0.07);
+    13→    13→  --c-border-hi: rgba(255,255,255,0.12);
+    14→    14→  --c-text:      #f5f5f5;
+    15→    15→  --c-text-2:    rgba(245,245,245,0.55);
+    16→    16→  --c-text-3:    rgba(245,245,245,0.30);
+    17→    17→  --c-accent:    #f5f5f5;
+    18→    18→  --c-accent-2:  #ffffff;
+    19→    19→
+    20→    20→  /* Typography */
+    21→    21→  --f-display: 'Clash Display', 'Inter', sans-serif;
+    22→    22→  --f-body:    'Inter', sans-serif;
+    23→    23→  --f-mono:    'JetBrains Mono', monospace;
+    24→    24→
+    25→    25→  /* Layout */
+    26→    26→  --gap:      clamp(1.5rem, 3vw, 3rem);
+    27→    27→  --page-pad: clamp(1.25rem, 5vw, 5rem);
+    28→    28→  --radius:   12px;
+    29→    29→  --radius-sm: 6px;
+    30→    30→}
+    31→    31→
+    32→    32→/* ---- Reset ---- */
+    33→    33→*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    34→    34→
+    35→    35→html {
+    36→    36→  background: var(--c-bg);
+    37→    37→  color: var(--c-text);
+    38→    38→  font-family: var(--f-body);
+    39→    39→  font-size: 16px;
+    40→    40→  -webkit-font-smoothing: antialiased;
+    41→    41→  scroll-behavior: auto; /* Lenis overrides this */
+    42→    42→}
+    43→    43→
+    44→    44→/* Lenis resets */
+    45→    45→html.lenis { height: auto; }
+    46→    46→.lenis.lenis-smooth { scroll-behavior: auto !important; }
+    47→    47→.lenis.lenis-stopped { overflow: hidden; }
+    48→    48→
+    49→    49→/* Hide native scrollbar */
+    50→    50→::-webkit-scrollbar { display: none; }
+    51→    51→* { scrollbar-width: none; }
+    52→    52→
+    53→    53→body { min-height: 100vh; overflow-x: hidden; }
+    54→    54→
+    55→    55→img { max-width: 100%; display: block; }
+    56→    56→a { color: inherit; text-decoration: none; }
+    57→    57→button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+    58→    58→ul { list-style: none; }
+    59→    59→
+    60→    60→/* ---- Noise Grain ---- */
+    61→    61→.grain {
+    62→    62→  position: fixed;
+    63→    63→  inset: 0;
+    64→    64→  pointer-events: none;
+    65→    65→  z-index: 900;
+    66→    66→  opacity: 0.03;
+    67→    67→  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    68→    68→  background-size: 200px 200px;
+    69→    69→  mix-blend-mode: overlay;
+    70→    70→}
+    71→    71→
+    72→    72→/* ---- Utility ---- */
+    73→    73→.mono { font-family: var(--f-mono); }
+    74→    74→.section-tag {
+    75→    75→  font-family: var(--f-mono);
+    76→    76→  font-size: 0.72rem;
+    77→    77→  letter-spacing: 0.18em;
+    78→    78→  text-transform: uppercase;
+    79→    79→  color: var(--c-accent);
+    80→    80→  margin-bottom: 1rem;
+    81→    81→}
+    82→    82→.section-h2 {
+    83→    83→  font-family: var(--f-display);
+    84→    84→  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    85→    85→  font-weight: 700;
+    86→    86→  line-height: 1.05;
+    87→    87→  letter-spacing: -0.03em;
+    88→    88→  color: var(--c-text);
+    89→    89→}
+    90→    90→.section-h2 em { font-style: italic; color: var(--c-text-2); }
+    91→    91→
+    92→    92→.section { padding: clamp(4rem, 8vw, 8rem) var(--page-pad); border-top: 1px solid var(--c-border); }
+    93→    93→
+    94→    94→.section-header {
+    95→    95→  display: flex;
+    96→    96→  justify-content: space-between;
+    97→    97→  align-items: flex-end;
+    98→    98→  margin-bottom: clamp(2.5rem, 4vw, 4rem);
+    99→    99→  gap: var(--gap);
+   100→   100→}
+   101→   101→
+   102→   102→/* ---- Buttons ---- */
+   103→   103→.btn-primary {
+   104→   104→  display: inline-flex;
+   105→   105→  align-items: center;
+   106→   106→  gap: 0.5rem;
+   107→   107→  background: var(--c-accent);
+   108→   108→  color: var(--c-bg);
+   109→   109→  padding: 0.85rem 1.75rem;
+   110→   110→  border-radius: 100px;
+   111→   111→  font-weight: 600;
+   112→   112→  font-size: 0.9rem;
+   113→   113→  transition: background 0.2s, transform 0.2s;
+   114→   114→}
+   115→   115→.btn-primary:hover { background: #ffffff; transform: translateY(-1px); }
+   116→   116→
+   117→   117→.btn-outline {
+   118→   118→  display: inline-flex;
+   119→   119→  align-items: center;
+   120→   120→  gap: 0.5rem;
+   121→   121→  background: transparent;
+   122→   122→  color: var(--c-text);
+   123→   123→  padding: 0.85rem 1.75rem;
+   124→   124→  border-radius: 100px;
+   125→   125→  border: 1px solid var(--c-border-hi);
+   126→   126→  font-weight: 500;
+   127→   127→  font-size: 0.9rem;
+   128→   128→  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+   129→   129→}
+   130→   130→.btn-outline:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.03); transform: translateY(-1px); }
+   131→   131→
+   132→   132→.btn-ghost {
+   133→   133→  display: inline-flex;
+   134→   134→  align-items: center;
+   135→   135→  color: var(--c-text-2);
+   136→   136→  font-size: 0.88rem;
+   137→   137→  font-weight: 500;
+   138→   138→  padding: 0.5rem 0.75rem;
+   139→   139→  border-radius: 6px;
+   140→   140→  transition: color 0.2s, background 0.2s;
+   141→   141→}
+   142→   142→.btn-ghost:hover { color: var(--c-text); background: rgba(255,255,255,0.04); }
+   143→   143→
+   144→   144→.btn-cta {
+   145→   145→  display: inline-flex;
+   146→   146→  align-items: center;
+   147→   147→  background: var(--c-text);
+   148→   148→  color: var(--c-bg);
+   149→   149→  padding: 0.65rem 1.3rem;
+   150→   150→  border-radius: 100px;
+   151→   151→  font-weight: 700;
+   152→   152→  font-size: 0.85rem;
+   153→   153→  transition: opacity 0.2s, transform 0.2s;
+   154→   154→}
+   155→   155→.btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+   156→   156→
+   157→   157→.btn-outline-sm {
+   158→   158→  display: inline-flex;
+   159→   159→  align-items: center;
+   160→   160→  color: var(--c-text-2);
+   161→   161→  border: 1px solid var(--c-border-hi);
+   162→   162→  padding: 0.5rem 1rem;
+   163→   163→  border-radius: 100px;
+   164→   164→  font-size: 0.8rem;
+   165→   165→  font-weight: 500;
+   166→   166→  transition: all 0.2s;
+   167→   167→}
+   168→   168→.btn-outline-sm:hover { color: var(--c-text); border-color: rgba(255,255,255,0.2); }
+   169→   169→
+   170→   170→.btn-primary-block {
+   171→   171→  display: block;
+   172→   172→  text-align: center;
+   173→   173→  background: var(--c-accent);
+   174→   174→  color: var(--c-bg);
+   175→   175→  padding: 0.85rem 1.5rem;
+   176→   176→  border-radius: var(--radius);
+   177→   177→  font-weight: 600;
+   178→   178→  font-size: 0.9rem;
+   179→   179→  transition: background 0.2s, transform 0.2s;
+   180→   180→}
+   181→   181→.btn-primary-block:hover { background: #ffffff; transform: translateY(-1px); }
+   182→   182→
+   183→   183→.btn-outline-block {
+   184→   184→  display: block;
+   185→   185→  text-align: center;
+   186→   186→  background: transparent;
+   187→   187→  color: var(--c-text);
+   188→   188→  padding: 0.85rem 1.5rem;
+   189→   189→  border-radius: var(--radius);
+   190→   190→  border: 1px solid var(--c-border-hi);
+   191→   191→  font-weight: 500;
+   192→   192→  font-size: 0.9rem;
+   193→   193→  transition: all 0.2s;
+   194→   194→}
+   195→   195→.btn-outline-block:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.03); transform: translateY(-1px); }
+   196→   196→
+   197→   197→/* ============ NAV ============ */
+   198→   198→.nav {
+   199→   199→  position: fixed;
+   200→   200→  top: 0; left: 0; right: 0;
+   201→   201→  z-index: 800;
+   202→   202→  border-bottom: 1px solid var(--c-border);
+   203→   203→  background: rgba(8,8,8,0.85);
+   204→   204→  backdrop-filter: blur(20px) saturate(160%);
+   205→   205→  -webkit-backdrop-filter: blur(20px) saturate(160%);
+   206→   206→  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+   207→   207→}
+   208→   208→
+   209→   209→.nav-inner {
+   210→   210→  display: flex;
+   211→   211→  align-items: center;
+   212→   212→  justify-content: space-between;
+   213→   213→  padding: 0 var(--page-pad);
+   214→   214→  height: 64px;
+   215→   215→  gap: var(--gap);
+   216→   216→}
+   217→   217→
+   218→   218→.nav-logo {
+   219→   219→  display: flex;
+   220→   220→  align-items: center;
+   221→   221→  gap: 10px;
+   222→   222→  font-family: var(--f-display);
+   223→   223→  font-size: 1.05rem;
+   224→   224→  font-weight: 700;
+   225→   225→  letter-spacing: -0.03em;
+   226→   226→  flex-shrink: 0;
+   227→   227→}
+   228→   228→.nav-logo-mark { height: 28px; width: auto; filter: brightness(0) invert(1); }
+   229→   229→
+   230→   230→.nav-links {
+   231→   231→  display: flex;
+   232→   232→  gap: 0.25rem;
+   233→   233→}
+   234→   234→.nav-link {
+   235→   235→  font-size: 0.85rem;
+   236→   236→  font-weight: 500;
+   237→   237→  color: var(--c-text-2);
+   238→   238→  padding: 0.4rem 0.75rem;
+   239→   239→  border-radius: 6px;
+   240→   240→  transition: color 0.2s, background 0.2s;
+   241→   241→}
+   242→   242→.nav-link:hover { color: var(--c-text); background: rgba(255,255,255,0.04); }
+   243→   243→.nav-link.active { color: var(--c-text); }
+   244→   244→
+   245→   245→.nav-actions { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+   246→   246→
+   247→   247→.view-all {
+   248→   248→  font-size: 0.85rem;
+   249→   249→  font-weight: 500;
+   250→   250→  color: var(--c-text-2);
+   251→   251→  white-space: nowrap;
+   252→   252→  transition: color 0.2s;
+   253→   253→}
+   254→   254→.view-all:hover { color: var(--c-text); }
+   255→   255→
+   256→   256→/* ============ HERO ============ */
+   257→   257→.hero {
+   258→   258→  position: relative;
+   259→   259→  min-height: 100vh;
+   260→   260→  display: flex;
+   261→   261→  flex-direction: column;
+   262→   262→  justify-content: flex-end;
+   263→   263→  padding: 0 var(--page-pad) 4rem;
+   264→   264→  padding-top: 64px;
+   265→   265→  overflow: hidden;
+   266→   266→}
+   267→   267→
+   268→   268→/* Huge display text pinned behind content */
+   269→   269→.hero-display {
+   270→   270→  position: absolute;
+   271→   271→  top: 64px;
+   272→   272→  left: 0;
+   273→   273→  right: 0;
+   274→   274→  display: flex;
+   275→   275→  flex-direction: column;
+   276→   276→  padding: 0 var(--page-pad);
+   277→   277→  user-select: none;
+   278→   278→  pointer-events: none;
+   279→   279→  will-change: transform;
+   280→   280→}
+   281→   281→
+   282→   282→.hero-display-row {
+   283→   283→  display: flex;
+   284→   284→  line-height: 0.88;
+   285→   285→  gap: 0.06em;
+   286→   286→}
+   287→   287→
+   288→   288→.display-fill,
+   289→   289→.display-stroke {
+   290→   290→  font-family: var(--f-display);
+   291→   291→  font-weight: 800;
+   292→   292→  font-size: clamp(5rem, 17vw, 18rem);
+   293→   293→  letter-spacing: -0.04em;
+   294→   294→  text-transform: uppercase;
+   295→   295→}
+   296→   296→
+   297→   297→.display-fill {
+   298→   298→  color: var(--c-text);
+   299→   299→}
+   300→   300→
+   301→   301→.display-stroke {
+   302→   302→  color: transparent;
+   303→   303→  -webkit-text-stroke: 1.5px rgba(245,245,245,0.18);
+   304→   304→}
+   305→   305→
+   306→   306→.row-2 {
+   307→   307→  margin-top: -0.08em;
+   308→   308→  padding-left: 0.4em;
+   309→   309→}
+   310→   310→
+   311→   311→/* Hero content */
+   312→   312→.hero-content {
+   313→   313→  position: relative;
+   314→   314→  z-index: 2;
+   315→   315→  display: flex;
+   316→   316→  flex-direction: column;
+   317→   317→  gap: 2.5rem;
+   318→   318→  margin-top: auto;
+   319→   319→}
+   320→   320→
+   321→   321→.hero-label {
+   322→   322→  font-family: var(--f-mono);
+   323→   323→  font-size: 0.72rem;
+   324→   324→  letter-spacing: 0.18em;
+   325→   325→  text-transform: uppercase;
+   326→   326→  color: var(--c-accent);
+   327→   327→  margin-bottom: 0.75rem;
+   328→   328→}
+   329→   329→
+   330→   330→.hero-headline {
+   331→   331→  font-family: var(--f-display);
+   332→   332→  font-size: clamp(2rem, 4.5vw, 3.8rem);
+   333→   333→  font-weight: 700;
+   334→   334→  line-height: 1.1;
+   335→   335→  letter-spacing: -0.03em;
+   336→   336→  max-width: 520px;
+   337→   337→}
+   338→   338→
+   339→   339→.hero-sub {
+   340→   340→  font-size: 1.05rem;
+   341→   341→  line-height: 1.65;
+   342→   342→  color: var(--c-text-2);
+   343→   343→  max-width: 440px;
+   344→   344→}
+   345→   345→
+   346→   346→.hero-btns {
+   347→   347→  display: flex;
+   348→   348→  gap: 0.75rem;
+   349→   349→  flex-wrap: wrap;
+   350→   350→}
+   351→   351→
+   352→   352→.hero-stats {
+   353→   353→  display: flex;
+   354→   354→  align-items: center;
+   355→   355→  gap: 2rem;
+   356→   356→  padding: 1.5rem 2rem;
+   357→   357→  background: var(--c-bg-1);
+   358→   358→  border: 1px solid var(--c-border);
+   359→   359→  border-radius: var(--radius);
+   360→   360→  width: fit-content;
+   361→   361→}
+   362→   362→
+   363→   363→.stat { display: flex; flex-direction: column; }
+   364→   364→.stat-n {
+   365→   365→  font-family: var(--f-display);
+   366→   366→  font-size: 1.5rem;
+   367→   367→  font-weight: 700;
+   368→   368→  letter-spacing: -0.03em;
+   369→   369→}
+   370→   370→.stat-l { font-size: 0.75rem; color: var(--c-text-2); margin-top: 2px; }
+   371→   371→
+   372→   372→.stat-divider { width: 1px; height: 2rem; background: var(--c-border); }
+   373→   373→
+   374→   374→/* Scroll hint */
+   375→   375→.scroll-hint {
+   376→   376→  position: absolute;
+   377→   377→  bottom: 2rem;
+   378→   378→  right: var(--page-pad);
+   379→   379→  display: flex;
+   380→   380→  flex-direction: column;
+   381→   381→  align-items: center;
+   382→   382→  gap: 8px;
+   383→   383→  z-index: 2;
+   384→   384→}
+   385→   385→.scroll-hint-text {
+   386→   386→  font-family: var(--f-mono);
+   387→   387→  font-size: 0.65rem;
+   388→   388→  letter-spacing: 0.15em;
+   389→   389→  color: var(--c-text-3);
+   390→   390→  writing-mode: vertical-rl;
+   391→   391→  text-transform: uppercase;
+   392→   392→}
+   393→   393→.scroll-hint-line {
+   394→   394→  width: 1px;
+   395→   395→  height: 50px;
+   396→   396→  background: linear-gradient(to bottom, var(--c-text-3), transparent);
+   397→   397→  animation: scrollHintPulse 2s ease-in-out infinite;
+   398→   398→}
+   399→   399→@keyframes scrollHintPulse {
+   400→   400→  0%,100% { opacity: 0.4; }
+   401→   401→  50% { opacity: 1; }
+   402→   402→}
+   403→   403→
+   404→   404→/* ============ TICKER TAPE ============ */
+   405→   405→.ticker-wrap {
+   406→   406→  border-top: 1px solid var(--c-border);
+   407→   407→  border-bottom: 1px solid var(--c-border);
+   408→   408→  height: 48px;
+   409→   409→  overflow: hidden;
+   410→   410→  display: flex;
+   411→   411→  align-items: center;
+   412→   412→  background: var(--c-bg-1);
+   413→   413→}
+   414→   414→
+   415→   415→.ticker-track {
+   416→   416→  display: flex;
+   417→   417→  width: max-content;
+   418→   418→  animation: ticker 30s linear infinite;
+   419→   419→}
+   420→   420→
+   421→   421→.ticker-inner {
+   422→   422→  display: flex;
+   423→   423→  align-items: center;
+   424→   424→  gap: 1.5rem;
+   425→   425→  padding-right: 1.5rem;
+   426→   426→  white-space: nowrap;
+   427→   427→  font-family: var(--f-mono);
+   428→   428→  font-size: 0.72rem;
+   429→   429→  letter-spacing: 0.12em;
+   430→   430→  text-transform: uppercase;
+   431→   431→  color: var(--c-text-2);
+   432→   432→}
+   433→   433→
+   434→   434→.ticker-inner .sep {
+   435→   435→  color: var(--c-accent);
+   436→   436→  font-weight: 700;
+   437→   437→}
+   438→   438→
+   439→   439→@keyframes ticker {
+   440→   440→  0% { transform: translateX(0); }
+   441→   441→  100% { transform: translateX(-50%); }
+   442→   442→}
+   443→   443→
+   444→   444→/* ============ CREATORS SECTION ============ */
+   445→   445→.creators-grid {
+   446→   446→  display: grid;
+   447→   447→  grid-template-columns: repeat(auto-fill, minmax(280px, 360px));
+   448→   448→  justify-content: start;
+   449→   449→  gap: clamp(1.25rem, 3vw, 2rem);
+   450→   450→}
+   451→   451→.creators-grid:has(> .creator-card:only-child) {
+   452→   452→  grid-template-columns: minmax(280px, 420px);
+   453→   453→  max-width: 420px;
+   454→   454→}
+   455→   455→
+   456→   456→.creator-card {
+   457→   457→  --hover-x: 50%;
+   458→   458→  --hover-y: 42%;
+   459→   459→  aspect-ratio: 1;
+   460→   460→  position: relative;
+   461→   461→  overflow: hidden;
+   462→   462→  border: 1px solid var(--c-border-hi);
+   463→   463→  border-radius: 50%;
+   464→   464→  background:
+   465→   465→    radial-gradient(circle at 48% 24%, rgba(245,245,245,0.16), transparent 30%),
+   466→   466→    radial-gradient(circle at 50% 120%, rgba(245,245,245,0.08), transparent 36%),
+   467→   467→    var(--c-bg-1);
+   468→   468→  padding: clamp(1.4rem, 3vw, 2.1rem);
+   469→   469→  display: flex;
+   470→   470→  flex-direction: column;
+   471→   471→  align-items: center;
+   472→   472→  justify-content: center;
+   473→   473→  text-align: center;
+   474→   474→  transform-style: preserve-3d;
+   475→   475→  will-change: transform;
+   476→   476→  transition: border-color 0.35s, box-shadow 0.35s, background 0.35s, filter 0.35s;
+   477→   477→}
+   478→   478→.creator-card::before {
+   479→   479→  content: none;
+   480→   480→}
+   481→   481→.creator-card::after {
+   482→   482→  content: '';
+   483→   483→  position: absolute;
+   484→   484→  inset: -12%;
+   485→   485→  border-radius: 50%;
+   486→   486→  background:
+   487→   487→    radial-gradient(circle at var(--hover-x) var(--hover-y), rgba(245,245,245,0.24), transparent 28%),
+   488→   488→    conic-gradient(from 120deg, transparent, rgba(245,245,245,0.1), transparent 34%);
+   489→   489→  filter: blur(18px);
+   490→   490→  opacity: 0.38;
+   491→   491→  pointer-events: none;
+   492→   492→  transition: opacity 0.35s, filter 0.35s, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+   493→   493→}
+   494→   494→.creator-card:hover,
+   495→   495→.creator-card.is-hovered {
+   496→   496→  z-index: 2;
+   497→   497→  transform: translateY(-10px) scale(1.025);
+   498→   498→  border-color: rgba(245,245,245,0.95);
+   499→   499→  box-shadow:
+   500→   500→    0 0 34px rgba(245,245,245,0.28),
+   501→   501→    0 30px 95px rgba(0,0,0,0.52),
+   502→   502→    inset 0 0 0 1px rgba(245,245,245,0.08);
+   503→   503→  background:
+   504→   504→    radial-gradient(circle at 48% 24%, rgba(245,245,245,0.2), transparent 32%),
+   505→   505→    radial-gradient(circle at 50% 120%, rgba(245,245,245,0.1), transparent 38%),
+   506→   506→    var(--c-bg-2);
+   507→   507→  filter: brightness(1.06);
+   508→   508→}
+   509→   509→.creator-card:hover::before,
+   510→   510→.creator-card.is-hovered::before {
+   511→   511→  content: none;
+   512→   512→}
+   513→   513→.creator-card:hover::after,
+   514→   514→.creator-card.is-hovered::after {
+   515→   515→  opacity: 0.8;
+   516→   516→  filter: blur(14px);
+   517→   517→  transform: scale(1.04) rotate(12deg);
+   518→   518→}
+   519→   519→
+   520→   520→.creator-card-inner {
+   521→   521→  position: relative;
+   522→   522→  z-index: 1;
+   523→   523→  width: min(100%, 260px);
+   524→   524→  display: flex;
+   525→   525→  flex-direction: column;
+   526→   526→  align-items: center;
+   527→   527→  gap: 0.68rem;
+   528→   528→  transform: translateY(calc(var(--scroll-v, 0) * -0.025px));
+   529→   529→  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+   530→   530→}
+   531→   531→.creator-card:hover .creator-card-inner,
+   532→   532→.creator-card.is-hovered .creator-card-inner {
+   533→   533→  transform: translate3d(0, -8px, 34px);
+   534→   534→}
+   535→   535→
+   536→   536→.creator-card-top {
+   537→   537→  display: flex;
+   538→   538→  align-items: center;
+   539→   539→  justify-content: center;
+   540→   540→  gap: 0;
+   541→   541→  position: relative;
+   542→   542→  width: 100%;
+   543→   543→}
+   544→   544→
+   545→   545→.creator-avatar {
+   546→   546→  width: clamp(5.6rem, 12vw, 7.5rem);
+   547→   547→  height: clamp(5.6rem, 12vw, 7.5rem);
+   548→   548→  border-radius: 50%;
+   549→   549→  overflow: hidden;
+   550→   550→  flex-shrink: 0;
+   551→   551→  border: 1px solid rgba(245,245,245,0.2);
+   552→   552→  background: var(--c-bg-2);
+   553→   553→  box-shadow: 0 18px 46px rgba(0,0,0,0.34), inset 0 0 0 1px rgba(245,245,245,0.08);
+   554→   554→  transform: translateZ(18px);
+   555→   555→  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, border-color 0.35s;
+   556→   556→}
+   557→   557→.creator-avatar img {
+   558→   558→  width: 100%;
+   559→   559→  height: 100%;
+   560→   560→  object-fit: cover;
+   561→   561→  object-position: 64% 28%;
+   562→   562→  filter: saturate(0.85) contrast(1.04) brightness(0.92);
+   563→   563→  transform: scale(1.18);
+   564→   564→  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s;
+   565→   565→}
+   566→   566→.creator-card:hover .creator-avatar,
+   567→   567→.creator-card.is-hovered .creator-avatar {
+   568→   568→  border-color: rgba(245,245,245,0.34);
+   569→   569→  box-shadow: 0 24px 60px rgba(0,0,0,0.42), 0 0 30px rgba(245,245,245,0.08), inset 0 0 0 1px rgba(245,245,245,0.12);
+   570→   570→  transform: translate3d(0, -5px, 44px) scale(1.04);
+   571→   571→}
+   572→   572→.creator-card:hover .creator-avatar img,
+   573→   573→.creator-card.is-hovered .creator-avatar img {
+   574→   574→  filter: saturate(1.04) contrast(1.08) brightness(1);
+   575→   575→  transform: scale(1.27) translateY(-2px);
+   576→   576→}
+   577→   577→.creator-template-pill {
+   578→   578→  display: inline-flex;
+   579→   579→  align-items: baseline;
+   580→   580→  gap: 0.38rem;
+   581→   581→  padding: 0.35rem 0.72rem;
+   582→   582→  border: 1px solid rgba(245,245,245,0.18);
+   583→   583→  border-radius: 999px;
+   584→   584→  background: rgba(245,245,245,0.07);
+   585→   585→  box-shadow: inset 0 0 0 1px rgba(245,245,245,0.03);
+   586→   586→  font-family: var(--f-mono);
+   587→   587→  color: var(--c-text);
+   588→   588→  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s, border-color 0.35s;
+   589→   589→}
+   590→   590→.creator-card:hover .creator-template-pill,
+   591→   591→.creator-card.is-hovered .creator-template-pill {
+   592→   592→  border-color: rgba(245,245,245,0.3);
+   593→   593→  background: rgba(245,245,245,0.11);
+   594→   594→  transform: translate3d(0, -2px, 28px);
+   595→   595→}
+   596→   596→.creator-template-pill strong {
+   597→   597→  font-family: var(--f-display);
+   598→   598→  font-size: 1.05rem;
+   599→   599→  line-height: 0.9;
+   600→   600→  letter-spacing: 0;
+   601→   601→}
+   602→   602→.creator-template-pill span {
+   603→   603→  font-size: 0.52rem;
+   604→   604→  letter-spacing: 0.08em;
+   605→   605→  text-transform: uppercase;
+   606→   606→  color: var(--c-text-2);
+   607→   607→}
+   608→   608→
+   609→   609→.creator-meta {
+   610→   610→  display: flex;
+   611→   611→  flex-direction: column;
+   612→   612→  align-items: center;
+   613→   613→  gap: 0.18rem;
+   614→   614→}
+   615→   615→.creator-meta strong {
+   616→   616→  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+   617→   617→  font-weight: 700;
+   618→   618→  letter-spacing: 0;
+   619→   619→}
+   620→   620→.handle { font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-text-2); }
+   621→   621→.creator-meta,
+   622→   622→.creator-bio,
+   623→   623→.creator-tags,
+   624→   624→.creator-follow-btn {
+   625→   625→  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s;
+   626→   626→}
+   627→   627→.creator-card:hover .creator-meta,
+   628→   628→.creator-card.is-hovered .creator-meta {
+   629→   629→  transform: translate3d(0, -1px, 24px);
+   630→   630→}
+   631→   631→.creator-card:hover .creator-bio,
+   632→   632→.creator-card.is-hovered .creator-bio {
+   633→   633→  transform: translate3d(0, -1px, 20px);
+   634→   634→}
+   635→   635→.creator-card:hover .creator-tags,
+   636→   636→.creator-card.is-hovered .creator-tags {
+   637→   637→  transform: translate3d(0, 1px, 22px);
+   638→   638→}
+   639→   639→.creator-card:hover .creator-follow-btn,
+   640→   640→.creator-card.is-hovered .creator-follow-btn {
+   641→   641→  transform: translate3d(0, 3px, 26px);
+   642→   642→}
+   643→   643→
+   644→   644→.creator-bio {
+   645→   645→  max-width: 220px;
+   646→   646→  font-size: clamp(0.76rem, 1.5vw, 0.84rem);
+   647→   647→  line-height: 1.45;
+   648→   648→  color: var(--c-text-2);
+   649→   649→}
+   650→   650→
+   651→   651→.creator-tags {
+   652→   652→  display: flex;
+   653→   653→  flex-wrap: wrap;
+   654→   654→  justify-content: center;
+   655→   655→  gap: 6px;
+   656→   656→}
+   657→   657→.creator-tags span {
+   658→   658→  font-family: var(--f-mono);
+   659→   659→  font-size: 0.64rem;
+   660→   660→  letter-spacing: 0.05em;
+   661→   661→  padding: 3px 10px;
+   662→   662→  border-radius: 100px;
+   663→   663→  border: 1px solid var(--c-border-hi);
+   664→   664→  color: var(--c-text);
+   665→   665→  text-transform: uppercase;
+   666→   666→  background: rgba(245,245,245,0.04);
+   667→   667→}
+   668→   668→.creator-follow-btn {
+   669→   669→  font-size: 0.78rem;
+   670→   670→  font-weight: 600;
+   671→   671→  color: var(--c-text);
+   672→   672→  border: 1px solid var(--c-border-hi);
+   673→   673→  padding: 6px 15px;
+   674→   674→  border-radius: 100px;
+   675→   675→  transition: all 0.2s;
+   676→   676→}
+   677→   677→.creator-follow-btn:hover { background: var(--c-text); color: var(--c-bg); }
+   678→   678→
+   679→   679→.creator-card-join {
+   680→   680→  background: var(--c-bg);
+   681→   681→  display: flex;
+   682→   682→  align-items: center;
+   683→   683→  justify-content: center;
+   684→   684→  border: 1px dashed var(--c-border-hi);
+   685→   685→}
+   686→   686→.join-cta {
+   687→   687→  display: flex;
+   688→   688→  flex-direction: column;
+   689→   689→  align-items: center;
+   690→   690→  text-align: center;
+   691→   691→  gap: 0.75rem;
+   692→   692→  padding: 2rem;
+   693→   693→}
+   694→   694→.join-icon {
+   695→   695→  width: 48px;
+   696→   696→  height: 48px;
+   697→   697→  border-radius: 50%;
+   698→   698→  border: 1px dashed var(--c-border-hi);
+   699→   699→  display: flex;
+   700→   700→  align-items: center;
+   701→   701→  justify-content: center;
+   702→   702→  font-size: 1.5rem;
+   703→   703→  color: var(--c-text-2);
+   704→   704→}
+   705→   705→.join-cta strong { font-size: 0.9rem; }
+   706→   706→.join-cta p { font-size: 0.8rem; color: var(--c-text-2); line-height: 1.5; max-width: 200px; }
+   707→   707→
+   708→   708→.creators-page {
+   709→   709→  background: var(--c-bg);
+   710→   710→  color: var(--c-text);
+   711→   711→}
+   712→   712→
+   713→   713→.creators-page .creators-section {
+   714→   714→  min-height: 100vh;
+   715→   715→  padding-top: clamp(8rem, 12vw, 10rem);
+   716→   716→  border-top: 0;
+   717→   717→}
+   718→   718→
+   719→   719→.creators-page .nav-link[href="creators.html"] {
+   720→   720→  color: var(--c-text);
+   721→   721→}
+   722→   722→
+   723→   723→.community-page {
+   724→   724→  background: var(--c-bg);
+   725→   725→  color: var(--c-text);
+   726→   726→}
+   727→   727→
+   728→   728→.community-page .community-section {
+   729→   729→  min-height: 100vh;
+   730→   730→  padding-top: clamp(8rem, 12vw, 10rem);
+   731→   731→  border-top: 0;
+   732→   732→}
+   733→   733→
+   734→   734→.community-page .nav-link[href="community.html"] {
+   735→   735→  color: var(--c-text);
+   736→   736→}
+   737→   737→
+   738→   738→/* ============ TEMPLATES SECTION ============ */
+   739→   739→.template-filters {
+   740→   740→  display: flex;
+   741→   741→  flex-wrap: wrap;
+   742→   742→  gap: 6px;
+   743→   743→}
+   744→   744→.filter-btn {
+   745→   745→  font-family: var(--f-mono);
+   746→   746→  font-size: 0.72rem;
+   747→   747→  letter-spacing: 0.05em;
+   748→   748→  padding: 6px 14px;
+   749→   749→  border-radius: 100px;
+   750→   750→  border: 1px solid var(--c-border);
+   751→   751→  color: var(--c-text-2);
+   752→   752→  transition: all 0.2s;
+   753→   753→  text-transform: lowercase;
+   754→   754→}
+   755→   755→.filter-btn:hover { border-color: var(--c-border-hi); color: var(--c-text); }
+   756→   756→.filter-btn.active { background: var(--c-text); color: var(--c-bg); border-color: var(--c-text); }
+   757→   757→
+   758→   758→.templates-grid {
+   759→   759→  display: grid;
+   760→   760→  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+   761→   761→  gap: 1.25rem;
+   762→   762→}
+   763→   763→
+   764→   764→.template-card {
+   765→   765→  background: var(--c-bg-1);
+   766→   766→  border: 1px solid var(--c-border);
+   767→   767→  border-radius: var(--radius);
+   768→   768→  overflow: hidden;
+   769→   769→  transition: border-color 0.25s, transform 0.25s;
+   770→   770→}
+   771→   771→.template-card:hover { border-color: var(--c-border-hi); transform: translateY(-3px); }
+   772→   772→
+   773→   773→.motion-preview {
+   774→   774→  aspect-ratio: 16/10;
+   775→   775→  position: relative;
+   776→   776→  overflow: hidden;
+   777→   777→  display: flex;
+   778→   778→  align-items: flex-end;
+   779→   779→  padding: 1rem;
+   780→   780→  isolation: isolate;
+   781→   781→}
+   782→   782→
+   783→   783→.motion-preview::before {
+   784→   784→  content: '';
+   785→   785→  position: absolute;
+   786→   786→  inset: -25%;
+   787→   787→  background: linear-gradient(110deg, transparent 0 38%, rgba(255,255,255,0.16) 48%, transparent 58%);
+   788→   788→  opacity: 0.55;
+   789→   789→  transform: translateX(-65%);
+   790→   790→  animation: previewSweep 5.5s linear infinite;
+   791→   791→  z-index: 1;
+   792→   792→}
+   793→   793→
+   794→   794→.motion-preview::after {
+   795→   795→  content: '';
+   796→   796→  position: absolute;
+   797→   797→  inset: 0;
+   798→   798→  background:
+   799→   799→    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+   800→   800→    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+   801→   801→  background-size: 36px 36px;
+   802→   802→  opacity: 0.16;
+   803→   803→  z-index: 0;
+   804→   804→}
+   805→   805→
+   806→   806→.motion-preview-vlog { background: linear-gradient(135deg, #232833, #333a48); }
+   807→   807→.motion-preview-grade { background: linear-gradient(135deg, #161a2d, #243b63); }
+   808→   808→.motion-preview-sound { background: linear-gradient(135deg, #0c2724, #12423d); }
+   809→   809→.motion-preview-title { background: linear-gradient(135deg, #21190d, #3a2a12); }
+   810→   810→.motion-preview-shorts { background: linear-gradient(135deg, #101114, #272a30); }
+   811→   811→
+   812→   812→.preview-frame {
+   813→   813→  position: absolute;
+   814→   814→  inset: 18px 18px 38px;
+   815→   815→  border: 1px solid rgba(255,255,255,0.15);
+   816→   816→  border-radius: 8px;
+   817→   817→  overflow: hidden;
+   818→   818→  z-index: 2;
+   819→   819→}
+   820→   820→
+   821→   821→.preview-panel,
+   822→   822→.preview-subject,
+   823→   823→.preview-title,
+   824→   824→.preview-caption,
+   825→   825→.preview-grade,
+   826→   826→.preview-wipe,
+   827→   827→.wave,
+   828→   828→.title-word,
+   829→   829→.title-track,
+   830→   830→.phone-feed {
+   831→   831→  position: absolute;
+   832→   832→  display: block;
+   833→   833→}
+   834→   834→
+   835→   835→.preview-panel {
+   836→   836→  top: 18%;
+   837→   837→  bottom: 18%;
+   838→   838→  width: 42%;
+   839→   839→  border-radius: 6px;
+   840→   840→  background: rgba(245,245,245,0.16);
+   841→   841→}
+   842→   842→.panel-left {
+   843→   843→  left: 8%;
+   844→   844→  animation: panelCutLeft 3.2s ease-in-out infinite;
+   845→   845→}
+   846→   846→.panel-right {
+   847→   847→  right: 8%;
+   848→   848→  animation: panelCutRight 3.2s ease-in-out infinite;
+   849→   849→}
+   850→   850→.preview-subject {
+   851→   851→  left: 44%;
+   852→   852→  top: 24%;
+   853→   853→  width: 16%;
+   854→   854→  height: 44%;
+   855→   855→  border-radius: 999px 999px 6px 6px;
+   856→   856→  background: var(--c-accent);
+   857→   857→  box-shadow: 0 12px 30px rgba(245,245,245,0.18);
+   858→   858→  animation: subjectPulse 3.2s ease-in-out infinite;
+   859→   859→}
+   860→   860→.preview-title {
+   861→   861→  left: 8%;
+   862→   862→  bottom: 18%;
+   863→   863→  font-family: var(--f-display);
+   864→   864→  font-size: clamp(1.55rem, 4vw, 2.7rem);
+   865→   865→  font-weight: 800;
+   866→   866→  letter-spacing: 0;
+   867→   867→  color: var(--c-text);
+   868→   868→  animation: titlePunch 3.2s steps(1, end) infinite;
+   869→   869→}
+   870→   870→.preview-caption {
+   871→   871→  left: 10px;
+   872→   872→  bottom: 8px;
+   873→   873→  font-family: var(--f-mono);
+   874→   874→  font-size: 0.62rem;
+   875→   875→  letter-spacing: 0.08em;
+   876→   876→  text-transform: uppercase;
+   877→   877→  color: rgba(245,245,245,0.58);
+   878→   878→}
+   879→   879→
+   880→   880→.preview-grade {
+   881→   881→  inset: 0;
+   882→   882→  display: flex;
+   883→   883→  align-items: flex-end;
+   884→   884→  padding: 0.8rem;
+   885→   885→  font-family: var(--f-mono);
+   886→   886→  font-size: 0.6rem;
+   887→   887→  letter-spacing: 0.08em;
+   888→   888→  text-transform: uppercase;
+   889→   889→}
+   890→   890→.preview-grade.before {
+   891→   891→  color: rgba(245,245,245,0.46);
+   892→   892→  background: linear-gradient(135deg, #24262d, #5a554a);
+   893→   893→}
+   894→   894→.preview-grade.after {
+   895→   895→  color: rgba(245,245,245,0.82);
+   896→   896→  background: linear-gradient(135deg, #111827, #214d78 58%, #b38b45);
+   897→   897→  clip-path: inset(0 0 0 48%);
+   898→   898→  animation: gradeReveal 4s ease-in-out infinite;
+   899→   899→}
+   900→   900→.preview-wipe {
+   901→   901→  top: 0;
+   902→   902→  bottom: 0;
+   903→   903→  left: 48%;
+   904→   904→  width: 2px;
+   905→   905→  background: var(--c-accent);
+   906→   906→  box-shadow: 0 0 18px rgba(245,245,245,0.35);
+   907→   907→  animation: wipeMove 4s ease-in-out infinite;
+   908→   908→}
+   909→   909→
+   910→   910→.wave {
+   911→   911→  left: 9%;
+   912→   912→  right: 9%;
+   913→   913→  height: 8px;
+   914→   914→  border-radius: 999px;
+   915→   915→  transform-origin: left center;
+   916→   916→}
+   917→   917→.wave-a {
+   918→   918→  top: 34%;
+   919→   919→  background: rgba(48,209,88,0.85);
+   920→   920→  animation: waveMove 1.4s ease-in-out infinite;
+   921→   921→}
+   922→   922→.wave-b {
+   923→   923→  top: 49%;
+   924→   924→  background: rgba(245,245,245,0.6);
+   925→   925→  animation: waveMove 1.4s ease-in-out 0.18s infinite;
+   926→   926→}
+   927→   927→.wave-c {
+   928→   928→  top: 64%;
+   929→   929→  background: rgba(52,170,220,0.7);
+   930→   930→  animation: waveMove 1.4s ease-in-out 0.32s infinite;
+   931→   931→}
+   932→   932→
+   933→   933→.title-word {
+   934→   934→  left: 10%;
+   935→   935→  font-family: var(--f-display);
+   936→   936→  font-weight: 800;
+   937→   937→  line-height: 0.9;
+   938→   938→  letter-spacing: 0;
+   939→   939→  color: var(--c-text);
+   940→   940→}
+   941→   941→.title-word-a {
+   942→   942→  top: 24%;
+   943→   943→  font-size: clamp(2rem, 5vw, 3.5rem);
+   944→   944→  animation: titleSlideA 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+   945→   945→}
+   946→   946→.title-word-b {
+   947→   947→  top: 52%;
+   948→   948→  left: 25%;
+   949→   949→  font-size: clamp(1.6rem, 4vw, 2.8rem);
+   950→   950→  -webkit-text-stroke: 1px rgba(245,245,245,0.65);
+   951→   951→  color: transparent;
+   952→   952→  animation: titleSlideB 3.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+   953→   953→}
+   954→   954→.title-track {
+   955→   955→  left: 10%;
+   956→   956→  right: 10%;
+   957→   957→  bottom: 20%;
+   958→   958→  height: 2px;
+   959→   959→  background: rgba(245,245,245,0.22);
+   960→   960→}
+   961→   961→.title-track::after {
+   962→   962→  content: '';
+   963→   963→  position: absolute;
+   964→   964→  inset: 0 auto 0 0;
+   965→   965→  width: 34%;
+   966→   966→  background: var(--c-accent);
+   967→   967→  animation: trackRun 3.6s linear infinite;
+   968→   968→}
+   969→   969→
+   970→   970→.vertical-frame {
+   971→   971→  width: 42%;
+   972→   972→  left: 50%;
+   973→   973→  right: auto;
+   974→   974→  top: 14px;
+   975→   975→  bottom: 38px;
+   976→   976→  transform: translateX(-50%);
+   977→   977→  border-radius: 14px;
+   978→   978→}
+   979→   979→.phone-feed {
+   980→   980→  left: 10%;
+   981→   981→  right: 10%;
+   982→   982→  height: 42%;
+   983→   983→  border-radius: 8px;
+   984→   984→  background: linear-gradient(135deg, rgba(245,245,245,0.16), rgba(245,245,245,0.04));
+   985→   985→  border: 1px solid rgba(245,245,245,0.12);
+   986→   986→  animation: feedScroll 4s ease-in-out infinite;
+   987→   987→}
+   988→   988→.feed-one { top: -36%; }
+   989→   989→.feed-two { top: 12%; animation-delay: 0.1s; }
+   990→   990→.feed-three { top: 60%; animation-delay: 0.2s; }
+   991→   991→
+   992→   992→.preview-scrub {
+   993→   993→  position: absolute;
+   994→   994→  left: 1rem;
+   995→   995→  right: 1rem;
+   996→   996→  bottom: 1rem;
+   997→   997→  height: 4px;
+   998→   998→  border-radius: 999px;
+   999→   999→  overflow: hidden;
+  1000→  1000→  background: rgba(245,245,245,0.16);
+  1001→  1001→  z-index: 3;
+  1002→  1002→}
+  1003→  1003→.preview-scrub span {
+  1004→  1004→  display: block;
+  1005→  1005→  width: 34%;
+  1006→  1006→  height: 100%;
+  1007→  1007→  border-radius: inherit;
+  1008→  1008→  background: var(--c-accent);
+  1009→  1009→  animation: scrubLoop 3.6s linear infinite;
+  1010→  1010→}
+  1011→  1011→
+  1012→  1012→@keyframes previewSweep {
+  1013→  1013→  0% { transform: translateX(-65%); }
+  1014→  1014→  100% { transform: translateX(65%); }
+  1015→  1015→}
+  1016→  1016→@keyframes panelCutLeft {
+  1017→  1017→  0%, 100% { transform: translateX(0) scaleX(1); }
+  1018→  1018→  45% { transform: translateX(-10%) scaleX(0.78); }
+  1019→  1019→  68% { transform: translateX(6%) scaleX(1.08); }
+  1020→  1020→}
+  1021→  1021→@keyframes panelCutRight {
+  1022→  1022→  0%, 100% { transform: translateX(0) scaleX(1); }
+  1023→  1023→  45% { transform: translateX(10%) scaleX(0.78); }
+  1024→  1024→  68% { transform: translateX(-6%) scaleX(1.08); }
+  1025→  1025→}
+  1026→  1026→@keyframes subjectPulse {
+  1027→  1027→  0%, 100% { transform: translateY(0) scale(1); }
+  1028→  1028→  45% { transform: translateY(-8%) scale(1.08); }
+  1029→  1029→  68% { transform: translateY(4%) scale(0.96); }
+  1030→  1030→}
+  1031→  1031→@keyframes titlePunch {
+  1032→  1032→  0%, 42%, 100% { transform: translateY(0); opacity: 1; }
+  1033→  1033→  50% { transform: translateY(-8px); opacity: 0.45; }
+  1034→  1034→  58% { transform: translateY(4px); opacity: 1; }
+  1035→  1035→}
+  1036→  1036→@keyframes gradeReveal {
+  1037→  1037→  0%, 100% { clip-path: inset(0 0 0 30%); }
+  1038→  1038→  50% { clip-path: inset(0 0 0 70%); }
+  1039→  1039→}
+  1040→  1040→@keyframes wipeMove {
+  1041→  1041→  0%, 100% { left: 30%; }
+  1042→  1042→  50% { left: 70%; }
+  1043→  1043→}
+  1044→  1044→@keyframes waveMove {
+  1045→  1045→  0%, 100% { transform: scaleX(0.45); opacity: 0.52; }
+  1046→  1046→  45% { transform: scaleX(1); opacity: 1; }
+  1047→  1047→  72% { transform: scaleX(0.68); opacity: 0.72; }
+  1048→  1048→}
+  1049→  1049→@keyframes titleSlideA {
+  1050→  1050→  0%, 100% { transform: translateX(-12%); }
+  1051→  1051→  40%, 65% { transform: translateX(4%); }
+  1052→  1052→}
+  1053→  1053→@keyframes titleSlideB {
+  1054→  1054→  0%, 100% { transform: translateX(16%); }
+  1055→  1055→  40%, 65% { transform: translateX(-4%); }
+  1056→  1056→}
+  1057→  1057→@keyframes trackRun {
+  1058→  1058→  0% { transform: translateX(-110%); }
+  1059→  1059→  100% { transform: translateX(310%); }
+  1060→  1060→}
+  1061→  1061→@keyframes feedScroll {
+  1062→  1062→  0%, 100% { transform: translateY(0); }
+  1063→  1063→  50% { transform: translateY(-48%); }
+  1064→  1064→}
+  1065→  1065→@keyframes scrubLoop {
+  1066→  1066→  0% { transform: translateX(-105%); }
+  1067→  1067→  100% { transform: translateX(310%); }
+  1068→  1068→}
+  1069→  1069→
+  1070→  1070→.template-badge {
+  1071→  1071→  position: absolute;
+  1072→  1072→  top: 10px;
+  1073→  1073→  right: 10px;
+  1074→  1074→  font-family: var(--f-mono);
+  1075→  1075→  font-size: 0.65rem;
+  1076→  1076→  font-weight: 700;
+  1077→  1077→  padding: 3px 10px;
+  1078→  1078→  border-radius: 100px;
+  1079→  1079→  text-transform: uppercase;
+  1080→  1080→  letter-spacing: 0.05em;
+  1081→  1081→}
+  1082→  1082→.template-badge.free { background: rgba(48,209,88,0.15); color: #30d158; border: 1px solid rgba(48,209,88,0.3); }
+  1083→  1083→.template-badge.paid { background: rgba(245,245,245,0.1); color: var(--c-text); border: 1px solid var(--c-border-hi); }
+  1084→  1084→
+  1085→  1085→.template-info { padding: 1rem; }
+  1086→  1086→.template-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+  1087→  1087→.template-creator { font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-accent); }
+  1088→  1088→.template-meta {
+  1089→  1089→  display: flex;
+  1090→  1090→  align-items: center;
+  1091→  1091→  justify-content: space-between;
+  1092→  1092→  margin-top: 0.75rem;
+  1093→  1093→  gap: 0.5rem;
+  1094→  1094→}
+  1095→  1095→.template-app {
+  1096→  1096→  font-family: var(--f-mono);
+  1097→  1097→  font-size: 0.65rem;
+  1098→  1098→  letter-spacing: 0.05em;
+  1099→  1099→  padding: 3px 8px;
+  1100→  1100→  border-radius: 4px;
+  1101→  1101→  text-transform: uppercase;
+  1102→  1102→}
+  1103→  1103→.template-app.premiere { background: rgba(158,100,255,0.12); color: #9e64ff; }
+  1104→  1104→.template-app.davinci { background: rgba(255,159,10,0.12); color: #ff9f0a; }
+  1105→  1105→.template-app.aftereffects { background: rgba(30,215,96,0.12); color: #1ed760; }
+  1106→  1106→.template-app.capcut { background: rgba(245,245,245,0.08); color: var(--c-text-2); }
+  1107→  1107→.template-app.all { background: rgba(245,245,245,0.1); color: var(--c-accent); }
+  1108→  1108→.template-dl { font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-text-3); }
+  1109→  1109→
+  1110→  1110→.template-card-more {
+  1111→  1111→  background: var(--c-bg);
+  1112→  1112→  border: 1px dashed var(--c-border-hi);
+  1113→  1113→  display: flex;
+  1114→  1114→  align-items: center;
+  1115→  1115→  justify-content: center;
+  1116→  1116→  aspect-ratio: auto;
+  1117→  1117→  min-height: 200px;
+  1118→  1118→}
+  1119→  1119→.more-cta {
+  1120→  1120→  display: flex;
+  1121→  1121→  flex-direction: column;
+  1122→  1122→  align-items: center;
+  1123→  1123→  text-align: center;
+  1124→  1124→  gap: 0.5rem;
+  1125→  1125→  padding: 2rem;
+  1126→  1126→}
+  1127→  1127→.more-num {
+  1128→  1128→  font-family: var(--f-display);
+  1129→  1129→  font-size: 3rem;
+  1130→  1130→  font-weight: 800;
+  1131→  1131→  letter-spacing: -0.04em;
+  1132→  1132→  color: var(--c-text);
+  1133→  1133→  line-height: 1;
+  1134→  1134→}
+  1135→  1135→.more-label { font-size: 0.8rem; color: var(--c-text-2); line-height: 1.4; }
+  1136→  1136→
+  1137→  1137→/* ============ STANDALONE PACKS PAGE ============ */
+  1138→  1138→.packs-page {
+  1139→  1139→  min-height: 100vh;
+  1140→  1140→  background: var(--c-bg);
+  1141→  1141→  color: var(--c-text);
+  1142→  1142→}
+  1143→  1143→
+  1144→  1144→.packs-page .grain {
+  1145→  1145→  display: block;
+  1146→  1146→}
+  1147→  1147→
+  1148→  1148→.packs-shell {
+  1149→  1149→  min-height: 100vh;
+  1150→  1150→  background:
+  1151→  1151→    linear-gradient(180deg, rgba(255,255,255,0.025), transparent 24rem),
+  1152→  1152→    var(--c-bg);
+  1153→  1153→  color: var(--c-text);
+  1154→  1154→  position: relative;
+  1155→  1155→  overflow: hidden;
+  1156→  1156→}
+  1157→  1157→
+  1158→  1158→.packs-shell::before {
+  1159→  1159→  content: 'JUMPCUT';
+  1160→  1160→  position: absolute;
+  1161→  1161→  top: 4.8rem;
+  1162→  1162→  left: max(1.25rem, 4vw);
+  1163→  1163→  right: 0;
+  1164→  1164→  z-index: 0;
+  1165→  1165→  pointer-events: none;
+  1166→  1166→  font-family: var(--f-display);
+  1167→  1167→  font-size: clamp(6rem, 18vw, 18rem);
+  1168→  1168→  font-weight: 800;
+  1169→  1169→  line-height: 0.8;
+  1170→  1170→  letter-spacing: -0.055em;
+  1171→  1171→  color: transparent;
+  1172→  1172→  -webkit-text-stroke: 1px rgba(245,245,245,0.07);
+  1173→  1173→  text-transform: uppercase;
+  1174→  1174→  white-space: nowrap;
+  1175→  1175→}
+  1176→  1176→
+  1177→  1177→.packs-topbar {
+  1178→  1178→  min-height: 96px;
+  1179→  1179→  display: flex;
+  1180→  1180→  align-items: center;
+  1181→  1181→  padding: 1.4rem var(--page-pad) 0;
+  1182→  1182→  position: relative;
+  1183→  1183→  z-index: 2;
+  1184→  1184→}
+  1185→  1185→
+  1186→  1186→.packs-brand {
+  1187→  1187→  font-family: var(--f-display);
+  1188→  1188→  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  1189→  1189→  font-weight: 800;
+  1190→  1190→  letter-spacing: -0.03em;
+  1191→  1191→  color: var(--c-text);
+  1192→  1192→  text-transform: lowercase;
+  1193→  1193→  display: inline-flex;
+  1194→  1194→  align-items: center;
+  1195→  1195→  gap: 0.7rem;
+  1196→  1196→}
+  1197→  1197→
+  1198→  1198→.packs-brand::before {
+  1199→  1199→  content: 'J.';
+  1200→  1200→  display: inline-flex;
+  1201→  1201→  align-items: center;
+  1202→  1202→  justify-content: center;
+  1203→  1203→  width: 28px;
+  1204→  1204→  height: 28px;
+  1205→  1205→  border-radius: 50%;
+  1206→  1206→  font-family: var(--f-body);
+  1207→  1207→  font-size: 1rem;
+  1208→  1208→  font-weight: 900;
+  1209→  1209→  color: var(--c-bg);
+  1210→  1210→  background: var(--c-text);
+  1211→  1211→}
+  1212→  1212→
+  1213→  1213→.packs-workspace {
+  1214→  1214→  position: relative;
+  1215→  1215→  z-index: 1;
+  1216→  1216→  display: grid;
+  1217→  1217→  grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+  1218→  1218→  gap: clamp(2.5rem, 5vw, 5rem);
+  1219→  1219→  align-items: start;
+  1220→  1220→  width: min(1180px, calc(100vw - (var(--page-pad) * 2)));
+  1221→  1221→  margin: clamp(4rem, 8vw, 7rem) auto 0;
+  1222→  1222→}
+  1223→  1223→
+  1224→  1224→.packs-sidebar {
+  1225→  1225→  border-right: 1px solid var(--c-border-hi);
+  1226→  1226→  padding-right: 1rem;
+  1227→  1227→  min-height: 470px;
+  1228→  1228→}
+  1229→  1229→
+  1230→  1230→.pack-search {
+  1231→  1231→  display: block;
+  1232→  1232→  width: min(230px, 100%);
+  1233→  1233→  margin-bottom: 1rem;
+  1234→  1234→}
+  1235→  1235→
+  1236→  1236→.pack-search input {
+  1237→  1237→  width: 100%;
+  1238→  1238→  height: 40px;
+  1239→  1239→  border: 1px solid var(--c-border);
+  1240→  1240→  border-radius: 999px;
+  1241→  1241→  background: rgba(245,245,245,0.055);
+  1242→  1242→  color: var(--c-text);
+  1243→  1243→  font: 500 0.84rem var(--f-body);
+  1244→  1244→  outline: 0;
+  1245→  1245→  padding: 0 1.25rem;
+  1246→  1246→  transition: border-color 0.2s, background 0.2s;
+  1247→  1247→}
+  1248→  1248→
+  1249→  1249→.pack-search input::placeholder {
+  1250→  1250→  color: var(--c-text-3);
+  1251→  1251→}
+  1252→  1252→
+  1253→  1253→.pack-search input:focus {
+  1254→  1254→  border-color: rgba(245,245,245,0.24);
+  1255→  1255→  background: rgba(245,245,245,0.08);
+  1256→  1256→}
+  1257→  1257→
+  1258→  1258→.sr-only {
+  1259→  1259→  position: absolute;
+  1260→  1260→  width: 1px;
+  1261→  1261→  height: 1px;
+  1262→  1262→  padding: 0;
+  1263→  1263→  margin: -1px;
+  1264→  1264→  overflow: hidden;
+  1265→  1265→  clip: rect(0, 0, 0, 0);
+  1266→  1266→  white-space: nowrap;
+  1267→  1267→  border: 0;
+  1268→  1268→}
+  1269→  1269→
+  1270→  1270→.featured-creators {
+  1271→  1271→  width: min(230px, 100%);
+  1272→  1272→  margin: 0 0 1.35rem;
+  1273→  1273→  padding: 0.9rem;
+  1274→  1274→  border: 1px solid var(--c-border);
+  1275→  1275→  border-radius: var(--radius-sm);
+  1276→  1276→  background: rgba(245,245,245,0.035);
+  1277→  1277→}
+  1278→  1278→
+  1279→  1279→.featured-creators h2 {
+  1280→  1280→  display: inline-flex;
+  1281→  1281→  align-items: center;
+  1282→  1282→  gap: 0.5rem;
+  1283→  1283→  font-family: var(--f-mono);
+  1284→  1284→  font-size: 0.68rem;
+  1285→  1285→  font-weight: 700;
+  1286→  1286→  letter-spacing: 0.12em;
+  1287→  1287→  line-height: 1;
+  1288→  1288→  text-transform: uppercase;
+  1289→  1289→  color: var(--c-text);
+  1290→  1290→  margin-bottom: 0.85rem;
+  1291→  1291→}
+  1292→  1292→
+  1293→  1293→.featured-star {
+  1294→  1294→  width: 15px;
+  1295→  1295→  height: 15px;
+  1296→  1296→  display: inline-block;
+  1297→  1297→  flex: 0 0 auto;
+  1298→  1298→  background: var(--c-text);
+  1299→  1299→  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 56%, 79% 91%, 50% 70%, 21% 91%, 32% 56%, 2% 35%, 39% 35%);
+  1300→  1300→}
+  1301→  1301→
+  1302→  1302→.featured-creator-list {
+  1303→  1303→  display: flex;
+  1304→  1304→  flex-direction: column;
+  1305→  1305→  gap: 0.45rem;
+  1306→  1306→}
+  1307→  1307→
+  1308→  1308→.featured-creator {
+  1309→  1309→  display: grid;
+  1310→  1310→  grid-template-columns: 30px 1fr;
+  1311→  1311→  align-items: center;
+  1312→  1312→  gap: 0.65rem;
+  1313→  1313→  min-height: 42px;
+  1314→  1314→  padding: 0.45rem;
+  1315→  1315→  border-radius: var(--radius-sm);
+  1316→  1316→  color: var(--c-text-2);
+  1317→  1317→  text-align: left;
+  1318→  1318→  transition: background 0.18s, color 0.18s, transform 0.18s;
+  1319→  1319→}
+  1320→  1320→
+  1321→  1321→.featured-creator:hover,
+  1322→  1322→.featured-creator.is-selected {
+  1323→  1323→  background: rgba(245,245,245,0.055);
+  1324→  1324→  color: var(--c-text);
+  1325→  1325→}
+  1326→  1326→
+  1327→  1327→.featured-creator:hover {
+  1328→  1328→  transform: translateX(2px);
+  1329→  1329→}
+  1330→  1330→
+  1331→  1331→.featured-creator-mark {
+  1332→  1332→  width: 30px;
+  1333→  1333→  height: 30px;
+  1334→  1334→  border-radius: 50%;
+  1335→  1335→  display: inline-flex;
+  1336→  1336→  align-items: center;
+  1337→  1337→  justify-content: center;
+  1338→  1338→  border: 1px solid var(--c-border-hi);
+  1339→  1339→  background: rgba(245,245,245,0.065);
+  1340→  1340→  color: var(--c-text);
+  1341→  1341→  font-family: var(--f-mono);
+  1342→  1342→  font-size: 0.64rem;
+  1343→  1343→  font-weight: 700;
+  1344→  1344→  overflow: hidden;
+  1345→  1345→}
+  1346→  1346→
+  1347→  1347→.featured-creator-mark img {
+  1348→  1348→  width: 100%;
+  1349→  1349→  height: 100%;
+  1350→  1350→  object-fit: cover;
+  1351→  1351→}
+  1352→  1352→
+  1353→  1353→.featured-creator-mark img[src*="J_period"] {
+  1354→  1354→  object-fit: contain;
+  1355→  1355→  padding: 6px;
+  1356→  1356→}
+  1357→  1357→
+  1358→  1358→.featured-creator strong,
+  1359→  1359→.featured-creator small {
+  1360→  1360→  display: block;
+  1361→  1361→}
+  1362→  1362→
+  1363→  1363→.featured-creator strong {
+  1364→  1364→  font-size: 0.78rem;
+  1365→  1365→  font-weight: 700;
+  1366→  1366→  line-height: 1.15;
+  1367→  1367→  color: inherit;
+  1368→  1368→}
+  1369→  1369→
+  1370→  1370→.featured-creator small {
+  1371→  1371→  margin-top: 0.18rem;
+  1372→  1372→  font-family: var(--f-mono);
+  1373→  1373→  font-size: 0.62rem;
+  1374→  1374→  color: var(--c-text-3);
+  1375→  1375→}
+  1376→  1376→
+  1377→  1377→.creator-listing-empty {
+  1378→  1378→  min-height: 380px;
+  1379→  1379→  border: 1px solid var(--c-border);
+  1380→  1380→  border-radius: var(--radius);
+  1381→  1381→  background:
+  1382→  1382→    linear-gradient(90deg, rgba(245,245,245,0.045) 1px, transparent 1px),
+  1383→  1383→    linear-gradient(rgba(245,245,245,0.045) 1px, transparent 1px),
+  1384→  1384→    rgba(245,245,245,0.025);
+  1385→  1385→  background-size: 34px 34px;
+  1386→  1386→  display: flex;
+  1387→  1387→  flex-direction: column;
+  1388→  1388→  justify-content: center;
+  1389→  1389→  padding: clamp(2rem, 5vw, 4rem);
+  1390→  1390→}
+  1391→  1391→
+  1392→  1392→.creator-listing-empty[hidden] {
+  1393→  1393→  display: none;
+  1394→  1394→}
+  1395→  1395→
+  1396→  1396→.creator-listing-kicker {
+  1397→  1397→  font-family: var(--f-mono);
+  1398→  1398→  font-size: 0.68rem;
+  1399→  1399→  font-weight: 700;
+  1400→  1400→  letter-spacing: 0.14em;
+  1401→  1401→  text-transform: uppercase;
+  1402→  1402→  color: var(--c-text-3);
+  1403→  1403→}
+  1404→  1404→
+  1405→  1405→.creator-listing-empty h2 {
+  1406→  1406→  font-family: var(--f-display);
+  1407→  1407→  font-size: clamp(2.5rem, 5.2vw, 4.6rem);
+  1408→  1408→  font-weight: 800;
+  1409→  1409→  line-height: 0.9;
+  1410→  1410→  letter-spacing: -0.035em;
+  1411→  1411→  color: var(--c-text);
+  1412→  1412→  margin-top: 0.8rem;
+  1413→  1413→}
+  1414→  1414→
+  1415→  1415→.creator-listing-empty p {
+  1416→  1416→  margin-top: 1rem;
+  1417→  1417→  color: var(--c-text-2);
+  1418→  1418→  font-size: 0.92rem;
+  1419→  1419→}
+  1420→  1420→
+  1421→  1421→.pack-categories {
+  1422→  1422→  display: flex;
+  1423→  1423→  flex-direction: column;
+  1424→  1424→  gap: 2px;
+  1425→  1425→}
+  1426→  1426→
+  1427→  1427→.pack-category {
+  1428→  1428→  width: 100%;
+  1429→  1429→  min-height: 38px;
+  1430→  1430→  display: grid;
+  1431→  1431→  grid-template-columns: 24px 1fr;
+  1432→  1432→  align-items: center;
+  1433→  1433→  gap: 0.75rem;
+  1434→  1434→  padding: 0.48rem 0.85rem 0.48rem 1rem;
+  1435→  1435→  color: var(--c-text-2);
+  1436→  1436→  font-size: 0.86rem;
+  1437→  1437→  font-weight: 500;
+  1438→  1438→  text-align: left;
+  1439→  1439→  border-radius: var(--radius-sm);
+  1440→  1440→  transition: background 0.18s, color 0.18s, transform 0.18s;
+  1441→  1441→}
+  1442→  1442→
+  1443→  1443→.pack-category:hover,
+  1444→  1444→.pack-category.active {
+  1445→  1445→  background: rgba(245,245,245,0.075);
+  1446→  1446→  color: var(--c-text);
+  1447→  1447→}
+  1448→  1448→
+  1449→  1449→.pack-category:hover {
+  1450→  1450→  transform: translateX(2px);
+  1451→  1451→}
+  1452→  1452→
+  1453→  1453→.pack-category-icon {
+  1454→  1454→  width: 18px;
+  1455→  1455→  height: 18px;
+  1456→  1456→  position: relative;
+  1457→  1457→  display: inline-block;
+  1458→  1458→  color: var(--c-text);
+  1459→  1459→  opacity: 0.78;
+  1460→  1460→}
+  1461→  1461→
+  1462→  1462→.pack-category-icon::before,
+  1463→  1463→.pack-category-icon::after {
+  1464→  1464→  content: '';
+  1465→  1465→  position: absolute;
+  1466→  1466→  inset: 3px;
+  1467→  1467→  border: 2px solid currentColor;
+  1468→  1468→}
+  1469→  1469→
+  1470→  1470→.icon-all::after {
+  1471→  1471→  inset: 0;
+  1472→  1472→  border-width: 1px;
+  1473→  1473→  transform: translate(3px, -3px);
+  1474→  1474→}
+  1475→  1475→
+  1476→  1476→.icon-community::before {
+  1477→  1477→  width: 7px;
+  1478→  1478→  height: 7px;
+  1479→  1479→  border-radius: 50%;
+  1480→  1480→  inset: 2px auto auto 0;
+  1481→  1481→}
+  1482→  1482→
+  1483→  1483→.icon-community::after {
+  1484→  1484→  width: 14px;
+  1485→  1485→  height: 7px;
+  1486→  1486→  border-radius: 999px 999px 2px 2px;
+  1487→  1487→  inset: auto auto 1px 2px;
+  1488→  1488→}
+  1489→  1489→
+  1490→  1490→.icon-new::before {
+  1491→  1491→  inset: 2px 8px 8px 2px;
+  1492→  1492→  transform: rotate(45deg);
+  1493→  1493→}
+  1494→  1494→
+  1495→  1495→.icon-new::after {
+  1496→  1496→  inset: 9px 2px 2px 9px;
+  1497→  1497→  transform: rotate(45deg);
+  1498→  1498→}
+  1499→  1499→
+  1500→  1500→.icon-device::before {
+  1501→  1501→  inset: 2px 1px;
+  1502→  1502→  border-radius: 3px;
+  1503→  1503→}
+  1504→  1504→
+  1505→  1505→.icon-device::after {
+  1506→  1506→  inset: auto 5px 1px;
+  1507→  1507→  height: 3px;
+  1508→  1508→  border-width: 0 0 2px;
+  1509→  1509→}
+  1510→  1510→
+  1511→  1511→.icon-title::before {
+  1512→  1512→  inset: 2px;
+  1513→  1513→  border-width: 2px 0;
+  1514→  1514→}
+  1515→  1515→
+  1516→  1516→.icon-title::after {
+  1517→  1517→  inset: 7px 3px;
+  1518→  1518→  border-width: 2px 0 0;
+  1519→  1519→}
+  1520→  1520→
+  1521→  1521→.icon-transition::before {
+  1522→  1522→  inset: 4px 1px;
+  1523→  1523→  border-width: 2px 0 0;
+  1524→  1524→}
+  1525→  1525→
+  1526→  1526→.icon-transition::after {
+  1527→  1527→  inset: 5px 2px auto auto;
+  1528→  1528→  width: 8px;
+  1529→  1529→  height: 8px;
+  1530→  1530→  border-width: 2px 2px 0 0;
+  1531→  1531→  transform: rotate(45deg);
+  1532→  1532→}
+  1533→  1533→
+  1534→  1534→.icon-audio::before {
+  1535→  1535→  inset: 5px 10px 5px 1px;
+  1536→  1536→  border-width: 2px 0 2px 2px;
+  1537→  1537→}
+  1538→  1538→
+  1539→  1539→.icon-audio::after {
+  1540→  1540→  inset: 3px 1px 3px 7px;
+  1541→  1541→  border-width: 2px 2px 2px 0;
+  1542→  1542→  border-radius: 50%;
+  1543→  1543→}
+  1544→  1544→
+  1545→  1545→.icon-color::before {
+  1546→  1546→  inset: 1px;
+  1547→  1547→  border-radius: 50%;
+  1548→  1548→}
+  1549→  1549→
+  1550→  1550→.icon-color::after {
+  1551→  1551→  inset: 5px;
+  1552→  1552→  border-radius: 50%;
+  1553→  1553→}
+  1554→  1554→
+  1555→  1555→.icon-shorts::before {
+  1556→  1556→  inset: 1px 5px;
+  1557→  1557→  border-radius: 4px;
+  1558→  1558→}
+  1559→  1559→
+  1560→  1560→.icon-shorts::after {
+  1561→  1561→  inset: auto 8px 3px;
+  1562→  1562→  height: 2px;
+  1563→  1563→  border-width: 2px 0 0;
+  1564→  1564→}
+  1565→  1565→
+  1566→  1566→.icon-longform::before {
+  1567→  1567→  inset: 3px 1px;
+  1568→  1568→  border-radius: 3px;
+  1569→  1569→}
+  1570→  1570→
+  1571→  1571→.icon-longform::after {
+  1572→  1572→  inset: 7px 6px;
+  1573→  1573→  border-width: 5px 0 5px 8px;
+  1574→  1574→  border-color: transparent transparent transparent currentColor;
+  1575→  1575→}
+  1576→  1576→
+  1577→  1577→.icon-ads::before {
+  1578→  1578→  inset: 3px 2px 5px 1px;
+  1579→  1579→  border-width: 2px;
+  1580→  1580→}
+  1581→  1581→
+  1582→  1582→.icon-ads::after {
+  1583→  1583→  inset: 6px 0 auto auto;
+  1584→  1584→  width: 6px;
+  1585→  1585→  height: 6px;
+  1586→  1586→  border-width: 2px 2px 0 0;
+  1587→  1587→  transform: rotate(45deg);
+  1588→  1588→}
+  1589→  1589→
+  1590→  1590→.icon-brand::before {
+  1591→  1591→  inset: 2px;
+  1592→  1592→  transform: rotate(45deg);
+  1593→  1593→}
+  1594→  1594→
+  1595→  1595→.icon-brand::after {
+  1596→  1596→  inset: 6px;
+  1597→  1597→  border-radius: 50%;
+  1598→  1598→}
+  1599→  1599→
+  1600→  1600→.icon-web::before {
+  1601→  1601→  inset: 1px;
+  1602→  1602→  border-radius: 50%;
+  1603→  1603→}
+  1604→  1604→
+  1605→  1605→.icon-web::after {
+  1606→  1606→  inset: 1px 6px;
+  1607→  1607→  border-width: 0 2px;
+  1608→  1608→}
+  1609→  1609→
+  1610→  1610→.icon-ui::before {
+  1611→  1611→  inset: 3px 1px;
+  1612→  1612→  border-radius: 2px;
+  1613→  1613→}
+  1614→  1614→
+  1615→  1615→.icon-ui::after {
+  1616→  1616→  inset: auto 3px 4px;
+  1617→  1617→  height: 3px;
+  1618→  1618→  border-width: 0 0 2px;
+  1619→  1619→}
+  1620→  1620→
+  1621→  1621→.packs-main {
+  1622→  1622→  min-width: 0;
+  1623→  1623→  padding-bottom: 5rem;
+  1624→  1624→}
+  1625→  1625→
+  1626→  1626→.packs-main h1 {
+  1627→  1627→  font-family: var(--f-display);
+  1628→  1628→  font-size: clamp(4rem, 8vw, 7.2rem);
+  1629→  1629→  font-weight: 800;
+  1630→  1630→  line-height: 0.86;
+  1631→  1631→  letter-spacing: -0.035em;
+  1632→  1632→  word-spacing: 0.12em;
+  1633→  1633→  color: var(--c-text);
+  1634→  1634→  margin-bottom: clamp(2.5rem, 4vw, 4rem);
+  1635→  1635→  max-width: 760px;
+  1636→  1636→}
+  1637→  1637→
+  1638→  1638→.pack-grid {
+  1639→  1639→  display: grid;
+  1640→  1640→  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  1641→  1641→  gap: clamp(2rem, 3.2vw, 3rem) 1.25rem;
+  1642→  1642→}
+  1643→  1643→
+  1644→  1644→.pack-card {
+  1645→  1645→  min-width: 0;
+  1646→  1646→  color: var(--c-text);
+  1647→  1647→}
+  1648→  1648→
+  1649→  1649→.pack-card .motion-preview,
+  1650→  1650→.pack-placeholder {
+  1651→  1651→  aspect-ratio: 16 / 10.6;
+  1652→  1652→  min-height: 230px;
+  1653→  1653→  background-color: var(--c-bg-1);
+  1654→  1654→  border: 1px solid var(--c-border);
+  1655→  1655→  transition: border-color 0.25s, transform 0.25s, filter 0.25s;
+  1656→  1656→}
+  1657→  1657→
+  1658→  1658→.pack-card .motion-preview {
+  1659→  1659→  border-radius: 0;
+  1660→  1660→}
+  1661→  1661→
+  1662→  1662→.pack-card .template-badge {
+  1663→  1663→  top: 10px;
+  1664→  1664→  right: 10px;
+  1665→  1665→  border-radius: 100px;
+  1666→  1666→  background: rgba(245,245,245,0.13);
+  1667→  1667→  color: var(--c-text);
+  1668→  1668→  border: 1px solid rgba(245,245,245,0.22);
+  1669→  1669→  font-family: var(--f-mono);
+  1670→  1670→  font-size: 0.64rem;
+  1671→  1671→  text-transform: lowercase;
+  1672→  1672→  letter-spacing: 0.06em;
+  1673→  1673→  padding: 3px 9px 4px;
+  1674→  1674→}
+  1675→  1675→
+  1676→  1676→.pack-card h2 {
+  1677→  1677→  font-family: var(--f-display);
+  1678→  1678→  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  1679→  1679→  font-weight: 700;
+  1680→  1680→  color: var(--c-text);
+  1681→  1681→  margin-top: 1rem;
+  1682→  1682→  letter-spacing: -0.02em;
+  1683→  1683→  word-spacing: 0.08em;
+  1684→  1684→}
+  1685→  1685→
+  1686→  1686→.pack-card:hover .motion-preview,
+  1687→  1687→.pack-card:hover .pack-placeholder {
+  1688→  1688→  border-color: var(--c-border-hi);
+  1689→  1689→  transform: translateY(-3px);
+  1690→  1690→  filter: brightness(1.08);
+  1691→  1691→}
+  1692→  1692→
+  1693→  1693→.pack-placeholder {
+  1694→  1694→  position: relative;
+  1695→  1695→  overflow: hidden;
+  1696→  1696→  display: grid;
+  1697→  1697→  place-items: center;
+  1698→  1698→  isolation: isolate;
+  1699→  1699→}
+  1700→  1700→
+  1701→  1701→.pack-placeholder-grid {
+  1702→  1702→  position: absolute;
+  1703→  1703→  inset: 0;
+  1704→  1704→  background:
+  1705→  1705→    linear-gradient(90deg, rgba(245,245,245,0.09) 1px, transparent 1px),
+  1706→  1706→    linear-gradient(rgba(245,245,245,0.09) 1px, transparent 1px);
+  1707→  1707→  background-size: 18px 18px;
+  1708→  1708→}
+  1709→  1709→
+  1710→  1710→.pack-placeholder-title {
+  1711→  1711→  position: relative;
+  1712→  1712→  z-index: 1;
+  1713→  1713→  font-family: var(--f-display);
+  1714→  1714→  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  1715→  1715→  font-weight: 800;
+  1716→  1716→  color: var(--c-text);
+  1717→  1717→  letter-spacing: -0.04em;
+  1718→  1718→}
+  1719→  1719→
+  1720→  1720→.packs-help {
+  1721→  1721→  position: fixed;
+  1722→  1722→  right: 2.2rem;
+  1723→  1723→  bottom: 1.7rem;
+  1724→  1724→  width: 48px;
+  1725→  1725→  height: 48px;
+  1726→  1726→  border-radius: 999px;
+  1727→  1727→  background: var(--c-text);
+  1728→  1728→  color: var(--c-bg);
+  1729→  1729→  display: grid;
+  1730→  1730→  place-items: center;
+  1731→  1731→  font-weight: 800;
+  1732→  1732→  font-size: 1.15rem;
+  1733→  1733→  box-shadow: 0 16px 38px rgba(0,0,0,0.34);
+  1734→  1734→  z-index: 5;
+  1735→  1735→}
+  1736→  1736→
+  1737→  1737→/* ============ SERVICES SECTION ============ */
+  1738→  1738→.services-section {
+  1739→  1739→  padding-top: clamp(4rem, 8vw, 8rem);
+  1740→  1740→  padding-bottom: clamp(4rem, 8vw, 8rem);
+  1741→  1741→}
+  1742→  1742→.services-label-row { margin-bottom: 3rem; }
+  1743→  1743→
+  1744→  1744→.services-list { display: flex; flex-direction: column; }
+  1745→  1745→
+  1746→  1746→.service-row {
+  1747→  1747→  display: grid;
+  1748→  1748→  grid-template-columns: 3rem 1fr 1fr auto;
+  1749→  1749→  align-items: center;
+  1750→  1750→  gap: 2rem;
+  1751→  1751→  padding: 2rem 0;
+  1752→  1752→  border-top: 1px solid var(--c-border);
+  1753→  1753→  cursor: default;
+  1754→  1754→  transition: background 0.2s;
+  1755→  1755→  padding-left: var(--page-pad);
+  1756→  1756→  padding-right: var(--page-pad);
+  1757→  1757→  margin-left: calc(var(--page-pad) * -1);
+  1758→  1758→  margin-right: calc(var(--page-pad) * -1);
+  1759→  1759→}
+  1760→  1760→.service-row:last-child { border-bottom: 1px solid var(--c-border); }
+  1761→  1761→.service-row:hover { background: var(--c-bg-1); }
+  1762→  1762→
+  1763→  1763→.service-num {
+  1764→  1764→  font-family: var(--f-mono);
+  1765→  1765→  font-size: 0.7rem;
+  1766→  1766→  color: var(--c-text-3);
+  1767→  1767→  letter-spacing: 0.08em;
+  1768→  1768→}
+  1769→  1769→.service-name {
+  1770→  1770→  font-family: var(--f-display);
+  1771→  1771→  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  1772→  1772→  font-weight: 700;
+  1773→  1773→  letter-spacing: -0.02em;
+  1774→  1774→  transition: color 0.2s;
+  1775→  1775→}
+  1776→  1776→.service-row:hover .service-name { color: var(--c-accent); }
+  1777→  1777→.service-desc { font-size: 0.85rem; color: var(--c-text-2); line-height: 1.6; }
+  1778→  1778→.service-arrow {
+  1779→  1779→  font-size: 1.5rem;
+  1780→  1780→  color: var(--c-text-3);
+  1781→  1781→  transition: transform 0.3s, color 0.2s;
+  1782→  1782→}
+  1783→  1783→.service-row:hover .service-arrow { transform: translateX(6px); color: var(--c-accent); }
+  1784→  1784→
+  1785→  1785→/* ============ COMMUNITY SECTION ============ */
+  1786→  1786→.community-split {
+  1787→  1787→  display: grid;
+  1788→  1788→  grid-template-columns: 1fr 1fr;
+  1789→  1789→  gap: clamp(3rem, 6vw, 6rem);
+  1790→  1790→  align-items: start;
+  1791→  1791→}
+  1792→  1792→
+  1793→  1793→.community-body {
+  1794→  1794→  font-size: 1rem;
+  1795→  1795→  line-height: 1.7;
+  1796→  1796→  color: var(--c-text-2);
+  1797→  1797→  margin: 1.5rem 0 2rem;
+  1798→  1798→}
+  1799→  1799→
+  1800→  1800→.community-features {
+  1801→  1801→  display: flex;
+  1802→  1802→  flex-direction: column;
+  1803→  1803→  gap: 1.75rem;
+  1804→  1804→  margin-bottom: 2.5rem;
+  1805→  1805→}
+  1806→  1806→
+  1807→  1807→.community-features li {
+  1808→  1808→  display: flex;
+  1809→  1809→  gap: 1rem;
+  1810→  1810→  align-items: flex-start;
+  1811→  1811→}
+  1812→  1812→.feature-icon {
+  1813→  1813→  color: var(--c-accent);
+  1814→  1814→  flex-shrink: 0;
+  1815→  1815→  margin-top: 2px;
+  1816→  1816→  font-size: 0.9rem;
+  1817→  1817→}
+  1818→  1818→.community-features strong {
+  1819→  1819→  display: block;
+  1820→  1820→  font-size: 0.9rem;
+  1821→  1821→  font-weight: 600;
+  1822→  1822→  margin-bottom: 4px;
+  1823→  1823→}
+  1824→  1824→.community-features p {
+  1825→  1825→  font-size: 0.82rem;
+  1826→  1826→  line-height: 1.6;
+  1827→  1827→  color: var(--c-text-2);
+  1828→  1828→}
+  1829→  1829→
+  1830→  1830→.community-widget-card {
+  1831→  1831→  background: var(--c-bg-1);
+  1832→  1832→  border: 1px solid var(--c-border);
+  1833→  1833→  border-radius: var(--radius);
+  1834→  1834→  overflow: hidden;
+  1835→  1835→  position: sticky;
+  1836→  1836→  top: 84px;
+  1837→  1837→  min-height: 600px;
+  1838→  1838→}
+  1839→  1839→
+  1840→  1840→.community-widget-card widgetbot {
+  1841→  1841→  display: block;
+  1842→  1842→  width: 100%;
+  1843→  1843→  height: min(600px, calc(100vh - 120px));
+  1844→  1844→  min-height: 520px;
+  1845→  1845→}
+  1846→  1846→
+  1847→  1847→/* Community Feed */
+  1848→  1848→.community-feed {
+  1849→  1849→  background: var(--c-bg-1);
+  1850→  1850→  border: 1px solid var(--c-border);
+  1851→  1851→  border-radius: var(--radius);
+  1852→  1852→  overflow: hidden;
+  1853→  1853→  position: sticky;
+  1854→  1854→  top: 84px;
+  1855→  1855→}
+  1856→  1856→
+  1857→  1857→.feed-header {
+  1858→  1858→  padding: 0.85rem 1.25rem;
+  1859→  1859→  border-bottom: 1px solid var(--c-border);
+  1860→  1860→  display: flex;
+  1861→  1861→  align-items: center;
+  1862→  1862→  gap: 8px;
+  1863→  1863→}
+  1864→  1864→.feed-dot {
+  1865→  1865→  width: 7px;
+  1866→  1866→  height: 7px;
+  1867→  1867→  border-radius: 50%;
+  1868→  1868→  background: var(--c-accent);
+  1869→  1869→  box-shadow: 0 0 8px rgba(245,245,245,0.55);
+  1870→  1870→  animation: feedPulse 2s ease-in-out infinite;
+  1871→  1871→}
+  1872→  1872→@keyframes feedPulse {
+  1873→  1873→  0%,100% { opacity: 1; }
+  1874→  1874→  50% { opacity: 0.4; }
+  1875→  1875→}
+  1876→  1876→.feed-title { font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-text-2); letter-spacing: 0.1em; }
+  1877→  1877→
+  1878→  1878→.feed-posts { display: flex; flex-direction: column; }
+  1879→  1879→
+  1880→  1880→.feed-post {
+  1881→  1881→  padding: 1.1rem 1.25rem;
+  1882→  1882→  border-bottom: 1px solid var(--c-border);
+  1883→  1883→  display: flex;
+  1884→  1884→  gap: 10px;
+  1885→  1885→  align-items: flex-start;
+  1886→  1886→  transition: background 0.15s;
+  1887→  1887→}
+  1888→  1888→.feed-post:hover { background: var(--c-bg-2); }
+  1889→  1889→
+  1890→  1890→.feed-avatar {
+  1891→  1891→  width: 34px;
+  1892→  1892→  height: 34px;
+  1893→  1893→  border-radius: 50%;
+  1894→  1894→  flex-shrink: 0;
+  1895→  1895→  display: flex;
+  1896→  1896→  align-items: center;
+  1897→  1897→  justify-content: center;
+  1898→  1898→  font-family: var(--f-mono);
+  1899→  1899→  font-size: 0.65rem;
+  1900→  1900→  font-weight: 700;
+  1901→  1901→  color: rgba(0,0,0,0.8);
+  1902→  1902→}
+  1903→  1903→
+  1904→  1904→.feed-post-body { display: flex; flex-direction: column; gap: 4px; }
+  1905→  1905→.feed-post-user { font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-accent); font-weight: 600; }
+  1906→  1906→.feed-post-body p { font-size: 0.82rem; line-height: 1.5; color: var(--c-text); }
+  1907→  1907→.feed-post-time { font-family: var(--f-mono); font-size: 0.62rem; color: var(--c-text-3); }
+  1908→  1908→
+  1909→  1909→.feed-compose {
+  1910→  1910→  padding: 0.85rem 1.25rem;
+  1911→  1911→  display: flex;
+  1912→  1912→  align-items: center;
+  1913→  1913→  gap: 10px;
+  1914→  1914→  background: var(--c-bg-2);
+  1915→  1915→}
+  1916→  1916→.compose-avatar {
+  1917→  1917→  width: 28px;
+  1918→  1918→  height: 28px;
+  1919→  1919→  border-radius: 50%;
+  1920→  1920→  display: flex;
+  1921→  1921→  align-items: center;
+  1922→  1922→  justify-content: center;
+  1923→  1923→  font-family: var(--f-mono);
+  1924→  1924→  font-size: 0.7rem;
+  1925→  1925→  color: var(--c-text-2);
+  1926→  1926→  flex-shrink: 0;
+  1927→  1927→}
+  1928→  1928→.compose-input {
+  1929→  1929→  flex: 1;
+  1930→  1930→  background: transparent;
+  1931→  1931→  border: none;
+  1932→  1932→  color: var(--c-text-2);
+  1933→  1933→  font-family: var(--f-body);
+  1934→  1934→  font-size: 0.8rem;
+  1935→  1935→  outline: none;
+  1936→  1936→  cursor: default;
+  1937→  1937→}
+  1938→  1938→.compose-join-btn {
+  1939→  1939→  font-family: var(--f-mono);
+  1940→  1940→  font-size: 0.68rem;
+  1941→  1941→  color: var(--c-accent);
+  1942→  1942→  border: 1px solid rgba(245,245,245,0.3);
+  1943→  1943→  padding: 4px 10px;
+  1944→  1944→  border-radius: 100px;
+  1945→  1945→  white-space: nowrap;
+  1946→  1946→  transition: background 0.2s;
+  1947→  1947→}
+  1948→  1948→.compose-join-btn:hover { background: rgba(245,245,245,0.1); }
+  1949→  1949→
+  1950→  1950→/* ============ CTA BAND ============ */
+  1951→  1951→.cta-band {
+  1952→  1952→  padding: clamp(5rem, 10vw, 10rem) var(--page-pad);
+  1953→  1953→  border-top: 1px solid var(--c-border);
+  1954→  1954→  background: var(--c-bg-1);
+  1955→  1955→}
+  1956→  1956→
+  1957→  1957→.cta-band-inner {
+  1958→  1958→  display: flex;
+  1959→  1959→  align-items: center;
+  1960→  1960→  justify-content: space-between;
+  1961→  1961→  gap: var(--gap);
+  1962→  1962→  flex-wrap: wrap;
+  1963→  1963→}
+  1964→  1964→
+  1965→  1965→.cta-tag {
+  1966→  1966→  font-family: var(--f-mono);
+  1967→  1967→  font-size: 0.72rem;
+  1968→  1968→  letter-spacing: 0.18em;
+  1969→  1969→  text-transform: uppercase;
+  1970→  1970→  color: var(--c-accent);
+  1971→  1971→  margin-bottom: 1rem;
+  1972→  1972→}
+  1973→  1973→
+  1974→  1974→.cta-headline {
+  1975→  1975→  font-family: var(--f-display);
+  1976→  1976→  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  1977→  1977→  font-weight: 800;
+  1978→  1978→  line-height: 1.0;
+  1979→  1979→  letter-spacing: -0.04em;
+  1980→  1980→}
+  1981→  1981→.cta-headline em { font-style: italic; color: var(--c-text-2); }
+  1982→  1982→
+  1983→  1983→.cta-band-actions {
+  1984→  1984→  display: flex;
+  1985→  1985→  flex-direction: column;
+  1986→  1986→  gap: 1rem;
+  1987→  1987→  align-items: flex-end;
+  1988→  1988→}
+  1989→  1989→
+  1990→  1990→.btn-xl {
+  1991→  1991→  padding: 1.1rem 2.25rem;
+  1992→  1992→  font-size: 1rem;
+  1993→  1993→  font-weight: 700;
+  1994→  1994→}
+  1995→  1995→.btn-ghost-xl {
+  1996→  1996→  display: inline-flex;
+  1997→  1997→  align-items: center;
+  1998→  1998→  color: var(--c-text-2);
+  1999→  1999→  font-size: 0.9rem;
+  2000→  2000→  font-weight: 500;
+
+[showing lines 1-2000 of 2002; use offset=2001 with limit to continue reading]
